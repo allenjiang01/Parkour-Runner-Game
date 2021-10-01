@@ -12,8 +12,6 @@ public class Obstacle {
     public Obstacle() {
         obstacles = new ArrayList<>();
         rand = new Random();
-
-
     }
 
     public void addObstacle() {

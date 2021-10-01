@@ -61,10 +61,10 @@ public class Gui implements ActionListener, KeyListener {
     }
 
     public void repaint(Graphics g) {
-        g.setColor(Color.CYAN);
+        g.setColor(Color.cyan);
         g.fillRect(0,0,WIDTH,HEIGHT);
 
-        g.setColor(Color.orange);
+        g.setColor(Color.getHSBColor(0, 75, 65));
         g.fillRect(0,HEIGHT-150, WIDTH, 150);
 
         g.setColor(Color.green);
@@ -94,7 +94,9 @@ public class Gui implements ActionListener, KeyListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        gameStatus = player.playerAction(obstacle);
+        if (gameStatus) {
+            gameStatus = player.playerAction(obstacle);
+        }
         score = player.score;
         renderer.repaint();
 
