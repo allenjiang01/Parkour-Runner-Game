@@ -7,9 +7,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
-public class Gui implements ActionListener {
+
+public class Gui implements ActionListener, KeyListener {
 
     public static int WIDTH = 800;
     public static int HEIGHT = 800;
@@ -20,12 +22,12 @@ public class Gui implements ActionListener {
     public Renderer renderer;
     public Timer timer;
 
-    public ImageIcon characterImage;
-    public JLabel character;
-    public BufferedImage image;
 
     public Player player;
     public Obstacle obstacle;
+
+    public int score;
+    public boolean gameStatus;
 
     public Gui() {
         jframe = new JFrame();
@@ -40,27 +42,20 @@ public class Gui implements ActionListener {
         jframe.setSize(WIDTH, HEIGHT);
         jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         jframe.setTitle("Game");
+        jframe.addKeyListener(this);
         jframe.setVisible(true);
 
         player = new Player(WIDTH, HEIGHT);
         obstacle = new Obstacle();
 
+        gameStatus = true;
 
-        obstacle.addObstacle(true);
-        obstacle.addObstacle(true);
-        obstacle.addObstacle(true);
-        obstacle.addObstacle(true);
 
-//        try{
-//            image = ImageIO.read(new File("Cow.png"));
-//        } catch(IOException e){
-//            System.out.println("Error");
-//        }
+        obstacle.addObstacle();
+        obstacle.addObstacle();
+        obstacle.addObstacle();
+        obstacle.addObstacle();
 
-//        characterImage = new ImageIcon("Cow.png");
-//        character = new JLabel(characterImage);
-//        character.setVisible(true);
-//        jframe.add(character);
 
         timer.start();
     }
@@ -75,7 +70,6 @@ public class Gui implements ActionListener {
         g.setColor(Color.green);
         g.fillRect(0,HEIGHT-150, WIDTH, 20);
 
-        System.out.println("Hello");
 
         g.setColor(Color.red);
         g.fillRect(player.player.x, player.player.y, player.player.width, player.player.height);
@@ -84,7 +78,13 @@ public class Gui implements ActionListener {
             paintObstacle(g, obstacle);
         }
 
-       // g.fillRect(image.getMinX(), image.getMinY(), image.getWidth(), image.getHeight());
+        g.setColor(Color.WHITE);
+        g.setFont(new Font("Helvetica", Font.PLAIN, 30));
+        if (gameStatus) {
+            g.drawString(String.valueOf(score), WIDTH / 2 - 25, 100);
+        } else {
+            g.drawString("Game Over! Press space to restart.", 100, HEIGHT / 2 - 50);
+        }
     }
 
     public void paintObstacle(Graphics g, Rectangle ob) {
@@ -94,12 +94,48 @@ public class Gui implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        System.out.println("asdasd");
-        player.playerAction();
+        gameStatus = player.playerAction(obstacle);
+        score = player.score;
         renderer.repaint();
+
+
+
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+            if (!gameStatus) {
+                player = new Player(WIDTH, HEIGHT);
+                obstacle.obstacles.clear();
+                score = 0;
+
+                obstacle.addObstacle();
+                obstacle.addObstacle();
+                obstacle.addObstacle();
+                obstacle.addObstacle();
+
+                gameStatus = true;
+
+            } else {
+                player.jump();
+            }
+        }
     }
 
     public static void main(String[] arg) {
         gui = new Gui();
     }
+
 }
+

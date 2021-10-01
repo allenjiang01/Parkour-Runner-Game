@@ -2,22 +2,23 @@ package model;
 
 import java.awt.*;
 
-import ui.Gui;
-
 public class Player {
 
     public Rectangle player;
-    public Obstacle obstacle;
     public int speed;
-    public int yCoord;
+    public int dy;
     public int tick;
+    public boolean jumped;
+    public int score;
 
     public Player(int w, int h) {
-        player = new Rectangle(w / 2 - 10, h / 2 - 10, 20, 20);
+        player = new Rectangle(w / 2 - 10, h - 150 - 20, 20, 20);
         speed = 10;
+        dy = 0;
+        score = 0;
     }
 
-    public boolean playerAction() {
+    public boolean playerAction(Obstacle obstacle) {
 
         tick++;
 
@@ -27,8 +28,8 @@ public class Player {
             ob.x -= speed;
         }
 
-        if (tick % 2 == 0 && yCoord < 15) {
-            yCoord += 2;
+        if (tick % 2 == 0 && dy < 15) {
+            dy += 1;
         }
 
         for (int i = 0; i < obstacle.obstacles.size(); i++) {
@@ -36,56 +37,50 @@ public class Player {
 
             if (column.x + column.width < 0) {
                 obstacle.obstacles.remove(column);
+                obstacle.addObstacle();
 
-                if (column.y == 0) {
-                    obstacle.addObstacle(false);
-                }
             }
         }
 
-//            bird.y += yMotion;
-//
-//            for (Rectangle column : obstacle)
-//            {
-//                if (column.y == 0 && bird.x + bird.width / 2 > column.x + column.width / 2 - 10 && bird.x + bird.width / 2 < column.x + column.width / 2 + 10)
-//                {
-//                    score++;
-//                }
-//
-//                if (column.intersects(bird))
-//                {
-//                    gameOver = true;
-//
-//                    if (bird.x <= column.x)
-//                    {
-//                        bird.x = column.x - bird.width;
-//
-//                    }
-//                    else
-//                    {
-//                        if (column.y != 0)
-//                        {
-//                            bird.y = column.y - bird.height;
-//                        }
-//                        else if (bird.y < column.height)
-//                        {
-//                            bird.y = column.height;
-//                        }
-//                    }
-//                }
-//            }
-//
-//            if (bird.y > HEIGHT - 120 || bird.y < 0)
-//            {
-//                gameOver = true;
-//            }
-//
-//            if (bird.y + yMotion >= HEIGHT - 120)
-//            {
-//                bird.y = HEIGHT - 120 - bird.height;
-//                gameOver = true;
-//            }
-//        }
-        return false;
+
+        if (jumped) {
+            player.y += dy;
+            jumped = false;
+        }
+
+        if (player.y < 630) {
+            player.y += dy;
+        }
+
+
+
+
+
+        for (Rectangle o : obstacle.obstacles) {
+            if (player.x > o.x && player.x < o.x + o.width) {
+                score++;
+            }
+
+            if (o.intersects(player)) {
+                player.x = o.x - player.width;
+                return false;
+            }
+        }
+        return true;
     }
+
+    public void jump() {
+
+        if (player.y > 610) {
+
+
+            if (dy > 0) {
+
+                dy = -8;
+            }
+
+            jumped = true;
+        }
+    }
+
 }

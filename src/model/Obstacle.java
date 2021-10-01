@@ -16,16 +16,13 @@ public class Obstacle {
 
     }
 
-    public void addObstacle(boolean add) {
+    public void addObstacle() {
         int width = 10;
         int height = 20;
         int WIDTH = 800;
         int HEIGHT = 800;
 
-        if (add) {
-            obstacles.add(new Rectangle(WIDTH + obstacles.size() * 300 + rand.nextInt(1000), HEIGHT - height - 150, width, height));
-        } else {
-            obstacles.add(new Rectangle(obstacles.get(obstacles.size() - 1).x + 600, HEIGHT - height - 150, width, height));
-        }
+
+        obstacles.add(new Rectangle(WIDTH + obstacles.size() * 500 + rand.nextInt(600), HEIGHT - height - 150, width, height));
     }
 }
