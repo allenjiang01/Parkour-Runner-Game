@@ -11,6 +11,7 @@ public class Player {
     public boolean jumped;
     public int score;
 
+    // Player constructor
     public Player(int w, int h) {
         player = new Rectangle(w / 2 - 10, h - 150 - 20, 20, 20);
         speed = 10;
@@ -18,6 +19,7 @@ public class Player {
         score = 0;
     }
 
+    // Updates player character
     public boolean playerAction(Obstacle obstacle) {
 
         tick++;
@@ -69,6 +71,7 @@ public class Player {
         return true;
     }
 
+    // Handles user input
     public void jump() {
 
         if (player.y > 610) {

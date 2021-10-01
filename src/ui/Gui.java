@@ -29,6 +29,7 @@ public class Gui implements ActionListener, KeyListener {
     public int score;
     public boolean gameStatus;
 
+    // Initiates GUI
     public Gui() {
         jframe = new JFrame();
 
@@ -60,6 +61,7 @@ public class Gui implements ActionListener, KeyListener {
         timer.start();
     }
 
+    // Create graphics
     public void repaint(Graphics g) {
         g.setColor(Color.cyan);
         g.fillRect(0,0,WIDTH,HEIGHT);
@@ -87,11 +89,13 @@ public class Gui implements ActionListener, KeyListener {
         }
     }
 
+    // Create obstacle graphics
     public void paintObstacle(Graphics g, Rectangle ob) {
         g.setColor(Color.gray);
         g.fillRect(ob.x,ob.y,ob.width,ob.height);
     }
 
+    // Update game status
     @Override
     public void actionPerformed(ActionEvent e) {
         if (gameStatus) {
@@ -114,6 +118,7 @@ public class Gui implements ActionListener, KeyListener {
 
     }
 
+    // user input handler
     @Override
     public void keyReleased(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_SPACE) {

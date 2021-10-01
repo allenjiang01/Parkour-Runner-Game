@@ -9,11 +9,13 @@ public class Obstacle {
     public ArrayList<Rectangle> obstacles;
     public Random rand;
 
+    // Obstacle constructor
     public Obstacle() {
         obstacles = new ArrayList<>();
         rand = new Random();
     }
 
+    // Add additional obstacles 
     public void addObstacle() {
         int width = 10;
         int height = 20;
